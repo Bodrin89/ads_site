@@ -2,7 +2,6 @@
 import csv
 import json
 
-
 def convert_file(csv_file, json_file, model):
 
     '''Преобразование изCSV  в JSON'''
