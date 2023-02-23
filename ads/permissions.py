@@ -4,7 +4,8 @@ ROLE = ["moderator", "admin"]
 
 class CheckAuthorPermission(BasePermission):
 
-    message = "You are not the author"
+    message = "You are not the author, moderator or admin"
+
     def has_object_permission(self, request, view, obj):
         if obj.author == request.user or request.user.role in ROLE:
             return True

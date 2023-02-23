@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from ads import views
+from ads.views import ad
 from users.views import LocationsViewSet
 
 router = routers.SimpleRouter()
@@ -28,7 +28,7 @@ router.register('location', LocationsViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api_auth', include('rest_framework.urls')),
-    path('', views.index),
+    path('', ad.index),
     path('ad/', include('ads.url.ad')),
     path('cat/', include('ads.url.cat')),
     path('user/', include('users.url')),

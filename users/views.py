@@ -26,11 +26,13 @@ class UserCreateView(CreateAPIView):
 
 
 class UserUpdateView(UpdateAPIView):
+    """Обновление пользователя"""
     queryset = User.objects.all()
     serializer_class = PersonUpdateSerializer
 
 
 class UserDeleteView(DestroyAPIView):
+    """Удаление пользователя"""
     queryset = User.objects.all()
     serializer_class = PersonDestroySerializer
 

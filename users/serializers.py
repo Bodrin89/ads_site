@@ -78,6 +78,7 @@ class PersonUpdateSerializer(serializers.ModelSerializer):
 
     def save(self):
         user = super().save()
+        user.set_password(user.password)
         for location in self.location:
             loc_obj, _ = Location.objects.get_or_create(
                 name=location,
