@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import UpdateView, CreateView
-from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from ads.models import Ad, Category
@@ -12,7 +12,8 @@ from ads.models import Ad, Category
 import json
 
 from ads.permissions import CheckAuthorPermission
-from ads.serializers import AdListSerializer, AdDetailSerializer, AdUpdateSerializer, AdDeleteSerializer
+from ads.serializers import AdListSerializer, AdDetailSerializer, AdUpdateSerializer, AdDeleteSerializer, \
+    AdCreateSerializer
 from users.models import User
 
 
@@ -59,38 +60,10 @@ class AdUpdateView(UpdateAPIView):
     permission_classes = [CheckAuthorPermission]
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class AdCreateView(CreateView):
-    model = Ad
-    fields = ['name', 'price', 'description', 'image', 'is_published', 'author_id', 'category_id']
-
-    def post(self, request, *args, **kwargs):
-        """Создание объявления"""
-        ad_data = json.loads(request.body)
-
-        new_ad = Ad.objects.create(
-            name=ad_data['name'],
-            price=ad_data['price'],
-            description=ad_data['description'],
-            is_published=ad_data['is_published']
-        )
-        new_ad.image = ad_data.get('image', None)
-        new_ad.author = get_object_or_404(User, pk=ad_data['author'])
-        new_ad.category = get_object_or_404(Category, pk=ad_data['category'])
-
-        new_ad.save()
-        response = {
-            "name": new_ad.name,
-            "price": new_ad.price,
-            "description": new_ad.description,
-            "image": None,
-            "is_published": new_ad.is_published,
-            "author": new_ad.author_id,
-            "category": new_ad.category_id
-        }
-        if new_ad.image:
-            response['image'] = new_ad.image.url
-        return JsonResponse(response, safe=False)
+class AdCreateView(CreateAPIView):
+    """Создание объявления"""
+    queryset = Ad.objects.all()
+    serializer_class = AdCreateSerializer
 
 
 @method_decorator(csrf_exempt, name='dispatch')

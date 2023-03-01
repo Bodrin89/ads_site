@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from users.models import User, Location
+from users.validators import delta_date
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -40,6 +41,7 @@ class PersonCreateSerializer(serializers.ModelSerializer):
         queryset=Location.objects.all(),
         slug_field="name"
     )
+    birth_date = serializers.DateField(validators=[delta_date], required=True)
 
     class Meta:
         model = User

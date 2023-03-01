@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from users.validators import not_rambler
+
 
 class Location(models.Model):
     name = models.CharField(max_length=200)
@@ -22,7 +24,10 @@ class User(AbstractUser):
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     age = models.CharField(max_length=100)
+    birth_date = models.DateField()
+    email = models.EmailField(validators=[not_rambler], unique=True)
     location = models.ManyToManyField(Location, blank=True, null=True)
+
 
     class Meta:
         verbose_name = 'Пользователь'
