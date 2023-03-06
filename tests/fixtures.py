@@ -2,6 +2,8 @@
 import pytest
 from faker import Faker
 
+from tests.facrtories import UserFactory
+
 
 @pytest.fixture
 @pytest.mark.django_db
