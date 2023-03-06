@@ -24,10 +24,9 @@ class User(AbstractUser):
     password = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     age = models.CharField(max_length=100)
-    birth_date = models.DateField()
+    birth_date = models.DateField(null=True)
     email = models.EmailField(validators=[not_rambler], unique=True)
     location = models.ManyToManyField(Location, blank=True, null=True)
-
 
     class Meta:
         verbose_name = 'Пользователь'
